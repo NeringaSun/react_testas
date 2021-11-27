@@ -1,8 +1,9 @@
 import React from "react";
-import "./Button.css";
 
-const Button = ({ children }) => {
-  return <button>{children}</button>;
+import * as S from "./Button.styles";
+
+const Button = ({ type, children }) => {
+  return <S.button type={type || "button"}>{children}</S.button>;
 };
 
 export default Button;
