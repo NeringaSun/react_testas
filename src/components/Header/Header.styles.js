@@ -1,11 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const div = styled.div`
-  align-items: center;
+export const header = styled.div`
   background-color: #c9c9c9;
-  display: flex;
-  justify-content: center;
 `;
 export const img = styled.img`
   max-width: 10%;
+`;
+export const headerdiv = styled.div`
+  border: 1px solid red;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

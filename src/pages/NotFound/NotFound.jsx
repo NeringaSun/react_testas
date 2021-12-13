@@ -1,7 +1,13 @@
-import React from "react";
+import React from 'react';
+import { Header, Container } from '../../components';
 
 const NotFound = () => {
-  return <div>Not Found</div>;
+  return (
+    <div>
+      <Header></Header>
+      <Container>Not Found</Container>
+    </div>
+  );
 };
 
 export default NotFound;
