@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Header, Button, Container, Navigation } from '../../components';
 
 const pages = [
@@ -8,11 +8,11 @@ const pages = [
 ];
 
 const Login = () => {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState([]);
+  const Navigate = useNavigate();
 
   const handler = (e) => {
     e.preventDefault();
-    console.log(input);
     fetch(`${process.env.REACT_APP_BASE_URL}/v1/auth/login`, {
       method: 'POST',
       headers: {
@@ -24,7 +24,7 @@ const Login = () => {
       .then((data) => {
         if (data.token) {
           window.localStorage.setItem('token', data.token);
-          //Navigate("/", { replace: true });
+          Navigate('/', { replace: true });
           return alert(data.msg);
         }
         return alert(data.err);
@@ -51,7 +51,7 @@ const Login = () => {
           />
           <label>Password</label>
           <input
-            type='text'
+            type='password'
             placeholder='Password..'
             onChange={(e) => {
               setInput({ ...input, password: e.target.value });

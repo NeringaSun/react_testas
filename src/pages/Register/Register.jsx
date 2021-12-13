@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Header, Button, Container, Navigation } from '../../components';
 
 const pages = [
@@ -8,7 +8,29 @@ const pages = [
 ];
 
 const Register = () => {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState([]);
+  const Navigate = useNavigate();
+
+  const handler = (e) => {
+    e.preventDefault();
+    fetch(`${process.env.REACT_APP_BASE_URL}/v1/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(input),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          alert('Registration was successful');
+          setInput('');
+          Navigate('/', { replace: true });
+        }
+      })
+      .catch((err) => alert(err.message))
+      .finally(() => e.target.reset());
+  };
 
   return (
     <div>
@@ -16,29 +38,7 @@ const Register = () => {
         <Navigation links={pages} />
       </Header>
       <Container>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log(input);
-            fetch(`${process.env.REACT_APP_BASE_URL}/v1/auth/register`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(input),
-            })
-              .then((res) => res.json())
-              .then((data) => {
-                if (data) {
-                  alert('Registration was successful');
-                  setInput('');
-                  // e.target.reset();
-                }
-              })
-              .catch((err) => alert(err.message))
-              .finally(() => e.target.reset());
-          }}
-        >
+        <form onSubmit={handler}>
           <label>Email</label>
           <input
             type='email'
@@ -50,7 +50,7 @@ const Register = () => {
           />
           <label>Password</label>
           <input
-            type='text'
+            type='password'
             placeholder='Password..'
             onChange={(e) => {
               setInput({ ...input, password: e.target.value });
