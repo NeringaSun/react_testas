@@ -35,11 +35,11 @@ const Home = () => {
       </Header>
       <Container>
         <div>
-          {!data && <h1 className='title'>Loading...</h1>}
+          {!data && <h1>Loading...</h1>}
           <div>
             {data.map((item, i) => (
-              <div id={i}>
-                <h1>{item.title}</h1>
+              <div className='skill-card' key={i + item}>
+                <h2>{item.title}</h2>
                 <p>{item.description}</p>
               </div>
             ))}

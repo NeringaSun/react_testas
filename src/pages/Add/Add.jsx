@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header, Navigation } from '../../components';
+import { Header, Navigation, Button } from '../../components';
 
 const pages = [
   { url: '/', name: 'Home' },
@@ -12,6 +12,28 @@ const Add = () => {
   const [userInputs, setUserInputs] = useState([]);
   const Navigate = useNavigate();
 
+  const handler = (e) => {
+    e.preventDefault();
+    fetch(`${process.env.REACT_APP_BASE_URL}/v1/content/skills`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userInputs),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          alert('Skills added succesfully!');
+          setUserInputs('');
+          Navigate('/add', { replace: true });
+        }
+      })
+      .catch((err) => alert(err.message))
+      .finally(() => e.target.reset());
+  };
+
   return (
     <div>
       <Header>
@@ -19,34 +41,10 @@ const Add = () => {
       </Header>
       <div>
         <div>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-
-              fetch(`${process.env.REACT_APP_BASE_URL}/v1/content/skills`, {
-                method: 'POST',
-                headers: {
-                  authorization: `Bearer ${token}`,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userInputs),
-              })
-                .then((res) => res.json())
-                .then((data) => {
-                  if (data) {
-                    alert('Skills added succesfully!');
-                    setUserInputs('');
-                    Navigate('/', { replace: true });
-                  }
-                })
-                .catch((err) => alert(err.message))
-                .finally(() => e.target.reset());
-            }}
-          >
+          <form onSubmit={handler}>
             <h1>ADD SKILLS</h1>
             <div>
               <div>
-                <label className='label'>Title</label>
                 <input
                   className='input'
                   type='text'
@@ -61,10 +59,8 @@ const Add = () => {
                 />
               </div>
             </div>
-
             <div>
               <div>
-                <label className='label'>Description</label>
                 <textarea
                   className='textarea'
                   onChange={(e) =>
@@ -81,7 +77,7 @@ const Add = () => {
 
             <div>
               <div>
-                <button>ADD SKILLS</button>
+                <Button type='submit'>ADD SKILLS</Button>
               </div>
             </div>
           </form>
