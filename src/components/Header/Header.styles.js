@@ -7,7 +7,6 @@ export const img = styled.img`
   max-width: 10%;
 `;
 export const headerdiv = styled.div`
-  border: 1px solid red;
   display: flex;
   justify-content: space-between;
   align-items: center;

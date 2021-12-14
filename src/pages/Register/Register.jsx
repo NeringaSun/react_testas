@@ -39,7 +39,7 @@ const Register = () => {
       </Header>
       <Container>
         <form onSubmit={handler}>
-          <label>Email</label>
+          <h2>Register</h2>
           <input
             type='email'
             placeholder='Email..'
@@ -48,7 +48,6 @@ const Register = () => {
             }}
             required
           />
-          <label>Password</label>
           <input
             type='password'
             placeholder='Password..'

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header, Button, Container, Navigation } from '../../components';
+import '../../index.css';
 
 const pages = [
   { url: '/Register', name: 'Register' },
@@ -40,7 +41,7 @@ const Login = () => {
       </Header>
       <Container>
         <form onSubmit={handler}>
-          <label>Email</label>
+          <h2>Login</h2>
           <input
             type='email'
             placeholder='Email..'
@@ -49,7 +50,7 @@ const Login = () => {
             }}
             required
           />
-          <label>Password</label>
+
           <input
             type='password'
             placeholder='Password..'
