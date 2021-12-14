@@ -1,10 +1,12 @@
-import React from "react";
-import "./Loading.css";
+import React from 'react';
+import './Loading.css';
 
 const Loading = () => {
   return (
-    <div className="lds-circle">
-      <div></div>
+    <div className='loading'>
+      <div className='lds-circle'>
+        <div></div>
+      </div>
     </div>
   );
 };

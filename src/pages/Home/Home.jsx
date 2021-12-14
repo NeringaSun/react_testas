@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Header, Container, Navigation } from '../../components';
+import { Header, Container, Navigation, Loading } from '../../components';
 
 const pages = [
   { url: '/', name: 'Home' },
@@ -35,15 +35,17 @@ const Home = () => {
       </Header>
       <Container>
         <div>
-          {!data && <h1>Loading...</h1>}
-          <div>
-            {data.map((item, i) => (
-              <div className='skill-card' key={i + item}>
-                <h2>{item.title}</h2>
-                <p>{item.description}</p>
-              </div>
-            ))}
-          </div>
+          {!data && <Loading />}
+          {data && (
+            <div>
+              {data.map((item, i) => (
+                <div className='skill-card' key={i + item}>
+                  <h2>{item.title}</h2>
+                  <p>{item.description}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </Container>
     </div>
