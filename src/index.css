@@ -4,9 +4,23 @@ form {
   text-align: center;
   width: 50%;
 }
-form input {
+form input,
+textarea {
   box-sizing: border-box;
   margin: 1rem 0;
   padding: 1rem;
   width: 100%;
+  background-color: #e6e6e6;
+}
+.skill-card {
+  background-color: #e6e6e6;
+  border-radius: 0.3rem;
+  margin: 0.8rem 0;
+  padding: 0.1rem;
+}
+.skill-card h2 {
+  text-align: center;
+}
+.skill-card p {
+  margin-left: 0.5rem;
 }
