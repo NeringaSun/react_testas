@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header, Button, Container, Navigation } from '../../components';
+import {
+  Header,
+  Button,
+  Container,
+  Navigation,
+  Notification,
+} from '../../components';
 
 const pages = [
   { url: '/Register', name: 'Register' },
@@ -9,11 +15,12 @@ const pages = [
 
 const Register = () => {
   const [input, setInput] = useState([]);
+  const [error, setError] = useState();
   const Navigate = useNavigate();
 
   const handler = (e) => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_BASE_URL}/v1/auth/register`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/v1/auth/registr`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,13 +29,14 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data) {
-          alert('Registration was successful');
+        if (data.token) {
           setInput('');
           Navigate('/', { replace: true });
+          return alert('Registration was successful');
         }
+        return setError('Registration failed, please try again later!');
       })
-      .catch((err) => alert(err.message))
+      .catch((err) => setError(err))
       .finally(() => e.target.reset());
   };
 
@@ -38,6 +46,7 @@ const Register = () => {
         <Navigation links={pages} />
       </Header>
       <Container>
+        {error && <Notification color='error'>{error}</Notification>}
         <form onSubmit={handler}>
           <h2>Register</h2>
           <input

@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header, Button, Container, Navigation } from '../../components';
+import {
+  Header,
+  Button,
+  Container,
+  Navigation,
+  Notification,
+} from '../../components';
 import '../../index.css';
 
 const pages = [
@@ -10,6 +16,7 @@ const pages = [
 
 const Login = () => {
   const [input, setInput] = useState([]);
+  const [error, setError] = useState();
   const Navigate = useNavigate();
 
   const handler = (e) => {
@@ -26,11 +33,11 @@ const Login = () => {
         if (data.token) {
           window.localStorage.setItem('token', data.token);
           Navigate('/', { replace: true });
-          return alert(data.msg);
+          return setError(data.msg);
         }
-        return alert(data.err);
+        return setError(data.err);
       })
-      .catch((err) => alert(err.message))
+      .catch((err) => setError(err.message))
       .finally(() => e.target.reset());
   };
 
@@ -40,6 +47,7 @@ const Login = () => {
         <Navigation links={pages} />
       </Header>
       <Container>
+        {error && <Notification color='error'>{error}</Notification>}
         <form onSubmit={handler}>
           <h2>Login</h2>
           <input
