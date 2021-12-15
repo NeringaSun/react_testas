@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const button = styled.button`
   background: #eee;
@@ -6,4 +6,5 @@ export const button = styled.button`
   border-radius: 0;
   color: #222;
   padding: 1rem 2.5rem;
+  cursor: pointer;
 `;

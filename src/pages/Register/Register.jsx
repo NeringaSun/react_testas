@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Header,
   Button,
@@ -16,11 +15,11 @@ const pages = [
 const Register = () => {
   const [input, setInput] = useState([]);
   const [error, setError] = useState();
-  const Navigate = useNavigate();
+  const [success, setSuccess] = useState();
 
   const handler = (e) => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_BASE_URL}/v1/auth/registr`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/v1/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,10 +28,9 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.token) {
+        if (!data.error) {
           setInput('');
-          Navigate('/', { replace: true });
-          return alert('Registration was successful');
+          return setSuccess('Registration was successful, go to login page!');
         }
         return setError('Registration failed, please try again later!');
       })
@@ -47,6 +45,7 @@ const Register = () => {
       </Header>
       <Container>
         {error && <Notification color='error'>{error}</Notification>}
+        {success && <Notification color='success'>{success}</Notification>}
         <form onSubmit={handler}>
           <h2>Register</h2>
           <input

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Header, Container, Navigation, Loading } from '../../components';
+import {
+  Header,
+  Container,
+  Navigation,
+  Loading,
+  Notification,
+} from '../../components';
 
 const pages = [
   { url: '/', name: 'Home' },
@@ -9,6 +15,8 @@ const pages = [
 const Home = () => {
   const token = window.localStorage.getItem('token');
   const [data, setData] = useState([]);
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BASE_URL}/v1/content/skills`, {
@@ -18,14 +26,16 @@ const Home = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data || token) {
-          setData(data);
-          console.log(data);
-        } else if (!data.content) {
-          alert('No data found');
+        if ((token && data.length === 0) || data.error) {
+          return setError(
+            'No data found or server do not respond, please try again later!'
+          );
+        } else if (data || token) {
+          return setData(data);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setError(err))
+      .finally(() => setLoading(false));
   }, [token]);
 
   return (
@@ -34,8 +44,9 @@ const Home = () => {
         <Navigation links={pages} />
       </Header>
       <Container>
+        {error && <Notification color='error'>{error}</Notification>}
+        {loading && <Loading />}
         <div>
-          {!data && <Loading />}
           {data && (
             <div>
               {data.map((item, i) => (
