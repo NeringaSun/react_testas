@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header, Navigation, Button } from '../../components';
+import {
+  Header,
+  Navigation,
+  Button,
+  Container,
+  Notification,
+} from '../../components';
 
 const pages = [
   { url: '/', name: 'Home' },
@@ -9,28 +15,34 @@ const pages = [
 
 const Add = () => {
   const token = window.localStorage.getItem('token');
-  const [userInputs, setUserInputs] = useState([]);
+  const [input, setInput] = useState([]);
+  const [error, setError] = useState();
+  const [success, setSuccess] = useState();
   const Navigate = useNavigate();
 
   const handler = (e) => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_BASE_URL}/v1/content/skills`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/v1/content/skill`, {
       method: 'POST',
       headers: {
         authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(userInputs),
+      body: JSON.stringify(input),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data) {
-          alert('Skills added succesfully!');
-          setUserInputs('');
+        if (!data.error) {
+          setInput('');
           Navigate('/add', { replace: true });
+          console.log(data);
+          return setSuccess(data.msg);
         }
+        return setError(
+          data.error + ' or other error accurred, please try again later'
+        );
       })
-      .catch((err) => alert(err.message))
+      .catch((err) => setError(err))
       .finally(() => e.target.reset());
   };
 
@@ -40,7 +52,9 @@ const Add = () => {
         <Navigation links={pages} />
       </Header>
       <div>
-        <div>
+        <Container>
+          {error && <Notification color='error'>{error}</Notification>}
+          {success && <Notification color='success'>{success}</Notification>}
           <form onSubmit={handler}>
             <h1>ADD SKILLS</h1>
             <div>
@@ -50,8 +64,8 @@ const Add = () => {
                   type='text'
                   placeholder='Title'
                   onChange={(e) =>
-                    setUserInputs({
-                      ...userInputs,
+                    setInput({
+                      ...input,
                       title: e.target.value.trim(),
                     })
                   }
@@ -64,8 +78,8 @@ const Add = () => {
                 <textarea
                   className='textarea'
                   onChange={(e) =>
-                    setUserInputs({
-                      ...userInputs,
+                    setInput({
+                      ...input,
                       description: e.target.value.trim(),
                     })
                   }
@@ -81,7 +95,7 @@ const Add = () => {
               </div>
             </div>
           </form>
-        </div>
+        </Container>
       </div>
     </div>
   );
