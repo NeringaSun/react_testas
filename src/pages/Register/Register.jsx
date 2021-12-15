@@ -28,7 +28,7 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (!data.error) {
+        if (!data.error && !data.err) {
           setInput('');
           return setSuccess('Registration was successful, go to login page!');
         }

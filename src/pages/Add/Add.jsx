@@ -22,7 +22,7 @@ const Add = () => {
 
   const handler = (e) => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_BASE_URL}/v1/content/skill`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/v1/content/skills`, {
       method: 'POST',
       headers: {
         authorization: `Bearer ${token}`,
