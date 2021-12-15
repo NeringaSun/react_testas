@@ -35,7 +35,6 @@ const Add = () => {
         if (!data.error) {
           setInput('');
           Navigate('/add', { replace: true });
-          console.log(data);
           return setSuccess(data.msg);
         }
         return setError(
